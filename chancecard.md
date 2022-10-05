@@ -19,34 +19,42 @@ graph LR
         CheckChanceCard --> pay15ToBank[銀行へ$15支払う]
         CheckChanceCard --> pay50ToPlyaers[各プレーヤーに$50支払う]
         CheckChanceCard --> pay25forHouse100ForHotel[修理費 家1軒あたり$25 ホテル1軒あたり$100を支払う]
-        CheckChanceCard --> getOutOfJailFreeCard[刑務所から釈放]
+        CheckChanceCard --> getOutOfJailFreeCard[刑務所から釈放カードを受け取る]
     end
 
-    advanceToStCharlesPlace --> move[指定のマスに移動]
-    advanceToIllinoisAvenue --> move[指定のマスに移動]
-    advanceToBoardwalk --> move[指定のマスに移動]
-    advanceToReadingRailroad --> move[指定のマスに移動]
-    advanceToNextRailroad --> move[指定のマスに移動]
-    advanceToNextUtility --> move[指定のマスに移動]
-    goBackThreeSpaces --> move[指定のマスに移動]
-    advanceToGo --> move[指定のマスに移動]
-    goToJail --> move[指定のマスに移動]
+    advanceToStCharlesPlace --> checkGoThrough
+    advanceToIllinoisAvenue --> checkGoThrough
+    advanceToBoardwalk --> checkGoThrough
+    advanceToReadingRailroad --> checkGoThrough
+    advanceToNextRailroad --> checkGoThrough
+    advanceToNextUtility --> checkGoThrough
 
-    move --> checkGoThrough{Goマスを過ぎたか}
-    checkGoThrough -->|Yes| pay[支払]
+    checkGoThrough{Goマスを過ぎたか}
+    checkGoThrough -->|Yes| get200FromBank[銀行より$200受取る]
+    checkGoThrough -->|No| move
 
-    get150FromBank --> get[収入]
-    get50FromBank --> get[収入]
-    pay15ToBank --> pay[支払]
-    pay50ToPlyaers --> pay[支払]
-    pay25forHouse100ForHotel --> pay[支払]
+    move[指定のマスに移動]
+    advanceToGo --> move
+    goToJail --> move
+    goBackThreeSpaces --> move
+    get200FromBank --> move
+
+    move --> action
+    
+    get[収入]
+    get150FromBank --> get
+    get50FromBank --> get
+
+    pay[支払]
+    pay15ToBank --> pay
+    pay50ToPlyaers --> pay
+    pay25forHouse100ForHotel --> pay
 
     action[[マスの指示]]
-    checkGoThrough -->|No| action
-    pay --> action
 
     endChanceCard((チャンスカードの<br/>終了))
     get --> endChanceCard
+    pay --> endChanceCard
     getOutOfJailFreeCard --> endChanceCard
     action --> endChanceCard
 ```
